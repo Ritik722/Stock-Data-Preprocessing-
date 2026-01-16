@@ -56,9 +56,17 @@ def preprocess_stock_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
-    # Keep paths relative for GitHub
-    file1 = "data/Stock_File_1.csv"
-    file2 = "data/Stock_File_2.txt"
+    import os
+
+   FILE1 = "Stock_File_1.csv"
+   FILE2 = "Stock_File_2.txt"
+
+   if not (os.path.exists(FILE1) and os.path.exists(FILE2)):
+      print("Input files not found.")
+      print("Place Stock_File_1.csv and Stock_File_2.txt in the same folder as this script,")
+      print("or edit FILE1/FILE2 paths inside the code.")
+      raise SystemExit
+
 
     df = load_data(file1, file2)
     cleaned = preprocess_stock_data(df)
@@ -67,7 +75,6 @@ def main():
     out_path = "output/cleaned_stock_data.csv"
     cleaned.to_csv(out_path, index=False)
 
-    # Minimal summary (helps reviewers)
     print(f"Rows after cleaning: {len(cleaned)}")
     print(f"Date range: {cleaned['Date'].min().date()} to {cleaned['Date'].max().date()}")
     print(f"Saved to: {out_path}")
